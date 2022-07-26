@@ -132,6 +132,13 @@ public class UserResource {
         return new ResponseEntity<>(user, OK);
     }
 
+    @PutMapping("/reset-profile-image")
+    public ResponseEntity<User> resetProfileImage(@RequestParam("username") String username)
+            throws UserNotFoundException, EmailExistException, UsernameExistException {
+        User user = userService.resetProfileImage(username);
+        return new ResponseEntity<>(user, OK);
+    }
+
     @GetMapping(path = "/image/{username}/{fileName}", produces = IMAGE_JPEG_VALUE)
     public byte[] getProfileImage(@PathVariable("username") String username,
                                   @PathVariable("fileName") String fileName) throws IOException {

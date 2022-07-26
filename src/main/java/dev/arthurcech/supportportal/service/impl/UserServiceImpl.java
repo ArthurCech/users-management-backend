@@ -192,6 +192,15 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         return user;
     }
 
+    @Override
+    public User resetProfileImage(String username)
+            throws UserNotFoundException, EmailExistException, UsernameExistException {
+        User user = validateNewUsernameAndEmail(username, null, null);
+        user.setProfileImageUrl(getTemporaryProfileImageUrl(username));
+        userRepository.save(user);
+        return user;
+    }
+
     private String getTemporaryProfileImageUrl(String username) {
         return ServletUriComponentsBuilder.fromCurrentContextPath().path(DEFAULT_USER_IMAGE_PATH + username).toUriString();
     }

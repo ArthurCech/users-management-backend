@@ -34,4 +34,6 @@ public interface UserService {
     User updateProfileImage(String username, MultipartFile profileImage)
             throws UserNotFoundException, EmailExistException, UsernameExistException, IOException, NotAnImageFileException;
 
+    User resetProfileImage(String username) throws UserNotFoundException, EmailExistException, UsernameExistException;
+
 }
