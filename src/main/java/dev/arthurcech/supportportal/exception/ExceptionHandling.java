@@ -2,10 +2,7 @@ package dev.arthurcech.supportportal.exception;
 
 import com.auth0.jwt.exceptions.TokenExpiredException;
 import dev.arthurcech.supportportal.domain.HttpResponse;
-import dev.arthurcech.supportportal.exception.domain.EmailExistException;
-import dev.arthurcech.supportportal.exception.domain.EmailNotFoundException;
-import dev.arthurcech.supportportal.exception.domain.UserNotFoundException;
-import dev.arthurcech.supportportal.exception.domain.UsernameExistException;
+import dev.arthurcech.supportportal.exception.domain.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.web.servlet.error.ErrorController;
@@ -101,11 +98,16 @@ public class ExceptionHandling implements ErrorController {
         return createHttpResponse(INTERNAL_SERVER_ERROR, ERROR_PROCESSING_FILE);
     }
 
+    @ExceptionHandler(NotAnImageFileException.class)
+    public ResponseEntity<HttpResponse> notAnImageFileException(NotAnImageFileException exception) {
+        return createHttpResponse(BAD_REQUEST, exception.getMessage());
+    }
+
     private ResponseEntity<HttpResponse> createHttpResponse(HttpStatus httpStatus, String message) {
         HttpResponse httpResponse = new HttpResponse(httpStatus.value(),
                 httpStatus,
                 httpStatus.getReasonPhrase().toUpperCase(),
-                message.toUpperCase());
+                message);
         return new ResponseEntity<>(httpResponse, httpStatus);
     }
 
