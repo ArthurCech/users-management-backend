@@ -18,6 +18,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.mail.MessagingException;
+
 import static dev.arthurcech.supportportal.constant.SecurityConstant.JWT_TOKEN_HEADER;
 
 @RestController
@@ -48,7 +50,7 @@ public class UserResource {
 
     @PostMapping("/register")
     public ResponseEntity<User> register(@RequestBody User user)
-            throws UserNotFoundException, EmailExistException, UsernameExistException {
+            throws UserNotFoundException, EmailExistException, UsernameExistException, MessagingException {
         User newUser = userService.register(user.getFirstName(), user.getLastName(),
                 user.getUsername(), user.getEmail());
         return new ResponseEntity<>(newUser, HttpStatus.OK);

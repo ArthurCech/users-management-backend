@@ -5,11 +5,13 @@ import dev.arthurcech.supportportal.exception.domain.EmailExistException;
 import dev.arthurcech.supportportal.exception.domain.UserNotFoundException;
 import dev.arthurcech.supportportal.exception.domain.UsernameExistException;
 
+import javax.mail.MessagingException;
 import java.util.List;
 
 public interface UserService {
 
-    User register(String firstName, String lastName, String username, String email) throws UserNotFoundException, EmailExistException, UsernameExistException;
+    User register(String firstName, String lastName, String username, String email)
+            throws UserNotFoundException, EmailExistException, UsernameExistException, MessagingException;
 
     List<User> getUsers();
 
