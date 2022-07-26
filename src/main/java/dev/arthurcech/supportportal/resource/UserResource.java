@@ -82,7 +82,7 @@ public class UserResource {
         return new ResponseEntity<>(newUser, OK);
     }
 
-    @PostMapping("/update")
+    @PutMapping("/update")
     public ResponseEntity<User> update(@RequestParam("currentUsername") String currentUsername,
                                        @RequestParam("firstName") String firstName,
                                        @RequestParam("lastName") String lastName,
@@ -124,7 +124,7 @@ public class UserResource {
         return response(OK, USER_DELETED_SUCCESSFULLY);
     }
 
-    @PostMapping("/update-profile-image")
+    @PutMapping("/update-profile-image")
     public ResponseEntity<User> updateProfileImage(@RequestParam("username") String username,
                                                    @RequestParam(value = "profileImage") MultipartFile profileImage)
             throws UserNotFoundException, UsernameExistException, EmailExistException, IOException, NotAnImageFileException {
