@@ -2,8 +2,10 @@ package dev.arthurcech.supportportal.exception.domain;
 
 public class UsernameExistException extends Exception {
 
-    public UsernameExistException(String message) {
-        super(message);
-    }
+	private static final long serialVersionUID = 1L;
+
+	public UsernameExistException(String message) {
+		super(message);
+	}
 
 }

@@ -2,8 +2,10 @@ package dev.arthurcech.supportportal.exception.domain;
 
 public class NotAnImageFileException extends Exception {
 
-    public NotAnImageFileException(String message) {
-        super(message);
-    }
+	private static final long serialVersionUID = 1L;
+
+	public NotAnImageFileException(String message) {
+		super(message);
+	}
 
 }

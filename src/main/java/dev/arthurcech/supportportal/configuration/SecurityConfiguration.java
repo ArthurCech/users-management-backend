@@ -25,44 +25,40 @@ import static org.springframework.security.config.http.SessionCreationPolicy.STA
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 public class SecurityConfiguration {
 
-    private final JwtAuthorizationFilter jwtAuthorizationFilter;
-    private final JwtAccessDeniedHandler jwtAccessDeniedHandler;
-    private final JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint;
-    private final UserDetailsService userDetailsService;
-    private final BCryptPasswordEncoder bCryptPasswordEncoder;
+	private final JwtAuthorizationFilter jwtAuthorizationFilter;
+	private final JwtAccessDeniedHandler jwtAccessDeniedHandler;
+	private final JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint;
+	private final UserDetailsService userDetailsService;
+	private final BCryptPasswordEncoder bCryptPasswordEncoder;
 
-    public SecurityConfiguration(JwtAuthorizationFilter jwtAuthorizationFilter,
-                                 JwtAccessDeniedHandler jwtAccessDeniedHandler,
-                                 JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint,
-                                 @Qualifier("userDetailsService") UserDetailsService userDetailsService,
-                                 BCryptPasswordEncoder bCryptPasswordEncoder) {
-        this.jwtAuthorizationFilter = jwtAuthorizationFilter;
-        this.jwtAccessDeniedHandler = jwtAccessDeniedHandler;
-        this.jwtAuthenticationEntryPoint = jwtAuthenticationEntryPoint;
-        this.userDetailsService = userDetailsService;
-        this.bCryptPasswordEncoder = bCryptPasswordEncoder;
-    }
+	public SecurityConfiguration(JwtAuthorizationFilter jwtAuthorizationFilter,
+			JwtAccessDeniedHandler jwtAccessDeniedHandler, JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint,
+			@Qualifier("userDetailsService") UserDetailsService userDetailsService,
+			BCryptPasswordEncoder bCryptPasswordEncoder) {
+		this.jwtAuthorizationFilter = jwtAuthorizationFilter;
+		this.jwtAccessDeniedHandler = jwtAccessDeniedHandler;
+		this.jwtAuthenticationEntryPoint = jwtAuthenticationEntryPoint;
+		this.userDetailsService = userDetailsService;
+		this.bCryptPasswordEncoder = bCryptPasswordEncoder;
+	}
 
-    @Bean
-    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-        AuthenticationManagerBuilder authenticationManagerBuilder = http.getSharedObject(AuthenticationManagerBuilder.class);
-        authenticationManagerBuilder.userDetailsService(userDetailsService).passwordEncoder(bCryptPasswordEncoder);
-        http.csrf().disable().cors().and()
-                .sessionManagement().sessionCreationPolicy(STATELESS)
-                .and().authorizeRequests().antMatchers(PUBLIC_URLS).permitAll()
-                .anyRequest().authenticated()
-                .and()
-                .exceptionHandling().accessDeniedHandler(jwtAccessDeniedHandler)
-                .authenticationEntryPoint(jwtAuthenticationEntryPoint)
-                .and()
-                .addFilterBefore(jwtAuthorizationFilter, UsernamePasswordAuthenticationFilter.class);
-        return http.build();
-    }
+	@Bean
+	public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+		AuthenticationManagerBuilder authenticationManagerBuilder = http
+				.getSharedObject(AuthenticationManagerBuilder.class);
+		authenticationManagerBuilder.userDetailsService(userDetailsService).passwordEncoder(bCryptPasswordEncoder);
+		http.csrf().disable().cors().and().sessionManagement().sessionCreationPolicy(STATELESS).and()
+				.authorizeRequests().antMatchers(PUBLIC_URLS).permitAll().anyRequest().authenticated().and()
+				.exceptionHandling().accessDeniedHandler(jwtAccessDeniedHandler)
+				.authenticationEntryPoint(jwtAuthenticationEntryPoint).and()
+				.addFilterBefore(jwtAuthorizationFilter, UsernamePasswordAuthenticationFilter.class);
+		return http.build();
+	}
 
-    @Bean
-    public AuthenticationManager authenticationManager(AuthenticationConfiguration authenticationConfiguration)
-            throws Exception {
-        return authenticationConfiguration.getAuthenticationManager();
-    }
+	@Bean
+	public AuthenticationManager authenticationManager(AuthenticationConfiguration authenticationConfiguration)
+			throws Exception {
+		return authenticationConfiguration.getAuthenticationManager();
+	}
 
 }
